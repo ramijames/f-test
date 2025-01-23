@@ -4,10 +4,10 @@
   </div>
 </template>
 
-<script>
-export default {
-  name: 'App'
-};
+<script setup>
+
+console.log('Hello, Vue 3!');
+
 </script>
 
 <style scoped lang="scss">

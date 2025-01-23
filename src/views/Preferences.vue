@@ -7,13 +7,20 @@
   </default-layout>
 </template>
 
-<script>
-import DefaultLayout from '../layouts/DefaultLayout.vue';
 
-export default {
-  name: 'Preferences',
-  components: {
-    DefaultLayout
+<script setup>
+
+import DefaultLayout from '../layouts/DefaultLayout.vue';
+import { onMounted } from 'vue';
+import { useRouter } from 'vue-router';
+
+const router = useRouter();
+
+onMounted(() => {
+  // Prevent blank screen in Electron builds
+  if (router.currentRoute.value.path === '/') {
+    router.push('/preferences');
   }
-};
+});
+
 </script>
