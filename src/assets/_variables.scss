@@ -1,0 +1,112 @@
+/* Colors */
+$black: #3A3940;
+$white: #ffffff;
+
+$brand: #693EEE;
+$brand-dark: #E0DEE6;
+$brand-light: #F1F0F5;
+$brand-bg: #F8F7FA;
+
+  /* Accents */
+  $accent-red: #FF3B30;
+  $accent-red-dark: #FF453A;
+  $accent-orange: #FF9500;
+  $accent-orange-dark: #FF9F0A;
+  $accent-yellow: #FFCC00;
+  $accent-yellow-dark: #FFD60A;
+  $accent-green: #28CD41;
+  $accent-green-dark: #32D74B;
+  $accent-mint: #00C7BE;
+  $accent-mint-dark: #66D4CF;
+  $accent-teal: #59ADC4;
+  $accent-teal-dark: #6AC4DC;
+  $accent-cyan: #55BEF0;
+  $accent-cyan-dark: #5AC8F5;
+  $accent-blue: #007AFF;
+  $accent-blue-dark: #0A84FF;
+  $accent-indigo: #5856D6;
+  $accent-indigo-dark: #5E5CE6;
+  $accent-purple: #AF52DE;
+  $accent-purple-dark: #BF5AF2;
+  $accent-pink: #FF2D55;
+  $accent-pink-dark: #FF375F;
+  $accent-gray: #8E8E93;
+  $accent-gray-dark: #98989D;
+  $accent-brown: #A2845E;
+  $accent-brown-dark: #AC8E68;
+
+  /* Fills */
+  $fill-primary: rgba($black, 0.1);
+  $fill-secondary: rgba($black, 0.08);
+  $fill-tertiary: rgba($black, 0.05);
+  $fill-quaternary: rgba($black, 0.03);
+  $fill-quinary: rgba($black, 0.015);
+  $fill-primary-dark: rgba($white, 0.1);
+  $fill-secondary-dark: rgba($white, 0.08);
+  $fill-tertiary-dark: rgba($white, 0.05);
+  $fill-quaternary-dark: rgba($white, 0.03);
+  $fill-quinary-dark: rgba($white, 0.015);
+  $fill-sheet: $brand-light;
+
+/* Borders */
+$border: 1px solid rgba($black, 0.1);
+
+/* Fonts */
+$font-family-main: 'SFPro', 'Helvetica', sans-serif;
+$font-size-xxs: 12px;
+$font-size-base: 13px;
+$font-size-xs: 12px;
+$font-size-sm: 13px;
+$font-size-md: 15px;
+$font-size-lg: 17px;
+$font-size-xl: 22px;
+$font-size-xxl: 26px;
+$font-size-max: 40px;
+$font-size-mega: 60px;
+
+/* Border-radius */
+$br-xs: 0.1rem;
+$br-sm: 0.2rem;
+$br-md: 0.4rem;
+$br-lg: 0.8rem;
+$br-xl: 1.6rem;
+$br-xxl: 3.2rem;
+
+/* Spacing */
+$spacing-xxxs: 0.25rem;
+$spacing-xxs: 0.4rem;
+$spacing-xs: .85rem;
+$spacing-sm: 1rem;
+$spacing-md: 2rem;
+$spacing-lg: 4rem;
+$spacing-xl: 8rem;
+$spacing-xxl: 16rem;
+
+/* Widths */
+$width-sm: 30rem;
+$width-md: 50rem;
+$width-lg: 70rem;
+$width-xl: 90rem;
+
+/* Shadows */
+$shadow-primary: 0 36px 100px rgba($black, 0.4), 0 0 0 1px rgba($black, 0.05);
+$shadow-secondary: 0 8px 40px rgba($black, 0.25), 0 0 0 1px rgba($black, 0.05);
+$shadow-tertiary: 0 36px 100px rgba($black, 0.25), 0 0 0 1px rgba($black, 0.05);
+$shadow-quaternary: 0 4px 20px rgba($black, 0.25), 0 0 0 1px rgba($black, 0.05);
+$shadow-icon: 0 1px 1px 1px rgba($black, 0.25);
+$shadow-inner: inset 0 0 3px rgba($white, 0.1);
+
+$shadow-primar-dark: 0 36px 100px rgba($black, 0.7), 0 0 0 1px rgba($black, 0.7);
+$shadow-secondary-dark: 0 8px 40px rgba($black, 0.7), 0 0 0 1px rgba($black, 0.7);
+$shadow-tertiary-dark: 0 36px 100px rgba($black, 0.7), 0 0 0 1px rgba($black, 0.7);
+$shadow-quaternary-dark: 0 4px 20px rgba($black, 0.7), 0 0 0 1px rgba($black, 0.7);
+$shadow-icon-dark: 0 2px 3px rgba($black, 0.7);
+$shadow-inner-dark: inset 0 0 3px rgba($white, 0.2);
+
+/* Breakpoints */
+$breakpoint-xs: 320px;
+$breakpoint-sm: 480px;
+$breakpoint-md: 768px;
+$breakpoint-lg: 1024px;
+$breakpoint-xl: 1200px;
+$breakpoint-xxl: 1440px;
