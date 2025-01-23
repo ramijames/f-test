@@ -10,6 +10,14 @@ if (started) {
 let mainWindow = null;
 
 const createWindow = () => {
+
+  if (mainWindow) {
+    // If window exists, just focus it
+    if (mainWindow.isMinimized()) mainWindow.restore();
+    mainWindow.focus();
+    return;
+  }
+  
   mainWindow = new BrowserWindow({
     width: 1024,
     height: 768,
@@ -31,34 +39,29 @@ const createWindow = () => {
     mainWindow.loadFile(path.join(__dirname, `../renderer/${MAIN_WINDOW_VITE_NAME}/index.html`));
   }
 
-  // Open the DevTools in dev mode only
   if (process.env.NODE_ENV === 'development') {
-    mainWindow.webContents.openDevTools();
+    mainWindow.webContents.openDevTools({ mode: 'detach' });
   }
 
   mainWindow.on('closed', () => {
     mainWindow = null;
+    // Explicitly quit the app on macOS when the window is closed
+    if (process.platform === 'darwin') {
+      app.quit();
+    }
   });
 };
 
-app.whenReady().then(() => {
-  createWindow();
+app.whenReady().then(createWindow);
 
-  app.on('activate', () => {
-    if (BrowserWindow.getAllWindows().length === 0) {
-      createWindow();
-    }
-  });
-});
-
-// Explicitly quit the app on macOS when CMD+Q is invoked
-app.on('before-quit', () => {
-  if (process.platform === 'darwin') {
-    app.exit(); // Ensure a hard exit
+app.on('activate', () => {
+  if (BrowserWindow.getAllWindows().length === 0) {
+    createWindow();
   }
 });
 
 app.on('window-all-closed', () => {
+  console.log('All windows closed');
   if (process.platform !== 'darwin') {
     app.quit();
   } else {
@@ -66,6 +69,14 @@ app.on('window-all-closed', () => {
     if (process.env.NODE_ENV === 'development') {
       app.quit();
     }
+  }
+});
+
+// Explicitly quit the app on macOS when CMD+Q is invoked
+app.on('before-quit', () => {
+  console.log('App before-quit');
+  if (process.platform === 'darwin') {
+    app.exit(); // Ensure a hard exit
   }
 });
 
