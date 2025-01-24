@@ -1,13 +1,101 @@
-import { app, BrowserWindow, ipcRenderer, ipcMain } from 'electron';
+import { app, BrowserWindow, ipcMain } from 'electron';
 import path from 'node:path';
 import started from 'electron-squirrel-startup';
-// import sequelize from './database.js';
-// import Feed from './models/Feed.js';
+import { Sequelize, DataTypes } from 'sequelize'
+import RSSParser from 'rss-parser';
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (started) {
   app.quit();
 }
+
+const dbPath = path.join(app.getPath('userData'), 'sqlite.db')
+const sequelize = new Sequelize({
+  dialect: 'sqlite',
+  storage: dbPath,
+  // logging: false, // optional
+})
+
+const parser = new RSSParser();
+
+const Feed = sequelize.define('Feed', {
+  title: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+  link: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+  description: {
+    type: DataTypes.STRING,
+    allowNull: true,
+  },
+  language: {
+    type: DataTypes.STRING,
+    allowNull: true,
+  },
+  image: {
+    type: DataTypes.JSON,
+    allowNull: true,
+  },
+  lastBuildDate: {
+    type: DataTypes.STRING,
+    allowNull: true,
+  },
+  items: {
+    type: DataTypes.JSON,
+    allowNull: true,
+  },
+  itunes: {
+    type: DataTypes.JSON,
+    allowNull: true,
+  },
+});
+
+Feed.delete = async (id) => {
+  return await Feed.destroy({
+    where: { id }
+  });
+};
+
+Feed.parse = async (url) => {
+  try {
+    const feed = await parser.parseURL(url);
+    console.log('Feed parsed:', feed);
+    return feed;
+  } catch (error) {
+    throw new Error(`Failed to parse feed: ${error.message}`);
+  }
+};
+
+// Sync DB
+sequelize.sync().then(async () => {
+  console.log('Database synced');
+
+  // Check if the test feed already exists to avoid duplicates
+  const existingFeed = await Feed.findOne({ where: { title: 'Test Feed' } });
+  if (!existingFeed) {
+    // Add a test Feed
+    try {
+      const testFeed = await Feed.create({
+        title: 'Test Feed',
+        link: 'https://example.com/feed',
+        description: 'This is a test feed',
+        language: 'en',
+        image: { url: 'https://example.com/image.png' },
+        lastBuildDate: '2023-10-27',
+        items: [],
+        itunes: {},
+      });
+      console.log('Test Feed added:', testFeed.toJSON());
+    } catch (err) {
+      console.error('Error adding Test Feed:', err);
+    }
+  } else {
+    console.log('Test Feed already exists:', existingFeed.toJSON());
+  }
+});
 
 let mainWindow = null;
 

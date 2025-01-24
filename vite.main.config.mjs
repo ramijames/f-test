@@ -4,7 +4,9 @@ export default defineConfig({
   build: {
     rollupOptions: {
       external: [
-        'sqlite3'
+        'sequelize',
+        'sqlite3',
+        'rss-parser',
       ]
     }
   }
