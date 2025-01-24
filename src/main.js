@@ -1,20 +1,31 @@
 import { app, BrowserWindow, ipcMain } from 'electron';
 import path from 'node:path';
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
+import fs from 'fs';
 import started from 'electron-squirrel-startup';
 import { Sequelize, DataTypes } from 'sequelize'
 import RSSParser from 'rss-parser';
 
-// Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (started) {
   app.quit();
 }
 
-const dbPath = path.join(app.getPath('userData'), 'sqlite.db')
+// Get user data path from Electron
+const userDataPath = app.getPath('userData');
+const dataDir = path.join(userDataPath, 'data');
+
+// Create data directory if it doesn't exist
+if (!fs.existsSync(dataDir)){
+    fs.mkdirSync(dataDir, { recursive: true });
+}
+
 const sequelize = new Sequelize({
   dialect: 'sqlite',
-  storage: dbPath,
-  // logging: false, // optional
+  storage: path.join(dataDir, 'database.sqlite')
 })
+
+console.log('Database path:', sequelize.options.storage); // /Users/ramijames/Library/Application Support/f-test/data/database.sqlite
 
 const parser = new RSSParser();
 
@@ -74,14 +85,14 @@ sequelize.sync().then(async () => {
   console.log('Database synced');
 
   // Check if the test feed already exists to avoid duplicates
-  const existingFeed = await Feed.findOne({ where: { title: 'Test Feed' } });
-  if (!existingFeed) {
+  // const existingFeed = await Feed.findOne({ where: { title: 'Test Feed' } });
+  // if (!existingFeed) {
     // Add a test Feed
     try {
       const testFeed = await Feed.create({
-        title: 'Test Feed',
-        link: 'https://example.com/feed',
-        description: 'This is a test feed',
+        title: 'Another Test Feed',
+        link: 'blah',
+        description: 'One test feed',
         language: 'en',
         image: { url: 'https://example.com/image.png' },
         lastBuildDate: '2023-10-27',
@@ -92,9 +103,9 @@ sequelize.sync().then(async () => {
     } catch (err) {
       console.error('Error adding Test Feed:', err);
     }
-  } else {
-    console.log('Test Feed already exists:', existingFeed.toJSON());
-  }
+  // } else {
+  //   console.log('Test Feed already exists:', existingFeed.toJSON());
+  // }
 });
 
 let mainWindow = null;
