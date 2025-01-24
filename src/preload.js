@@ -1,2 +1,13 @@
-// See the Electron documentation for details on how to use preload scripts:
-// https://www.electronjs.org/docs/latest/tutorial/process-model#preload-scripts
+const { contextBridge, ipcRenderer } = require('electron');
+
+console.log('[Preload] Script loading...');
+
+contextBridge.exposeInMainWorld('api', {
+  addFeed: (feed) => ipcRenderer.invoke('feed:add', feed),
+  getFeeds: () => ipcRenderer.invoke('feed:all'),
+  getFeed: (id) => ipcRenderer.invoke('feed:get', id),
+  deleteFeed: (id) => ipcRenderer.invoke('feed:delete', id),
+  parseFeed: (feedUrl) => ipcRenderer.invoke('feed:parse', feedUrl),
+});
+
+console.log('[Preload] API exposed');

@@ -2,7 +2,6 @@
   <div class="default-layout">
     <sidebar />
     <main class="content">
-      test
       <slot></slot>
     </main>
   </div>

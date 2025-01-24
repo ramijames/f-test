@@ -1,6 +1,8 @@
-import { app, BrowserWindow } from 'electron';
+import { app, BrowserWindow, ipcRenderer, ipcMain } from 'electron';
 import path from 'node:path';
 import started from 'electron-squirrel-startup';
+// import sequelize from './database.js';
+// import Feed from './models/Feed.js';
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (started) {
@@ -80,42 +82,41 @@ app.on('before-quit', () => {
   }
 });
 
+ipcMain.handle('feed:add', async (event, { 
+  title,
+  link,
+  description,
+  language,
+  image,
+  lastBuildDate,
+  items,
+  itunes
+ }) => {
+  return await Feed.create({ 
+    title,
+    link,
+    description,
+    language,
+    image,
+    lastBuildDate,
+    items,
+    itunes
+   })
+});
 
-// ipcMain.handle('feed:add', async (event, { 
-//   title,
-//   link,
-//   description,
-//   language,
-//   image,
-//   lastBuildDate,
-//   items,
-//   itunes
-//  }) => {
-//   return await Feed.create({ 
-//     title,
-//     link,
-//     description,
-//     language,
-//     image,
-//     lastBuildDate,
-//     items,
-//     itunes
-//    })
-// });
+ipcMain.handle('feed:all', async (event) => {
+  return await Feed.findAll();
+});
 
-// ipcMain.handle('feed:all', async (event) => {
-//   return await Feed.findAll();
-// });
+ipcMain.handle('feed:get', async (event, id) => {
+  return await Feed.findByPk(id);
+});
 
-// ipcMain.handle('feed:get', async (event, id) => {
-//   return await Feed.findByPk(id);
-// });
+ipcMain.handle('feed:delete', async (event, id) => {
+  return await Feed.destroy({ where: { id } });
+});
 
-// ipcMain.handle('feed:delete', async (event, id) => {
-//   return await Feed.destroy({ where: { id } });
-// });
-
-// ipcMain.handle('feed:parse', async (event, feedUrl) => {
-//   console.log('parsing feed:', feedUrl);
-//   return await Feed.parse(feedUrl);
-// });
+ipcMain.handle('feed:parse', async (event, feedUrl) => {
+  console.log('parsing feed:', feedUrl);
+  return await Feed.parse(feedUrl);
+});
